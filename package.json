@@ -1,0 +1,21 @@
+{
+  "name": "tsearched",
+  "version": "0.0.1",
+  "description": "Search SubRip formatted transcripts for text matches.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "kilobit.ca/go/tsearched"
+  },
+  "keywords": [
+    "srt",
+    "SubRip",
+    "search",
+    "transcript"
+  ],
+  "author": "Christian Saunders",
+  "license": "SEE LICENSE IN LICENSE"
+}
