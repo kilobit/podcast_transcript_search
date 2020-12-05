@@ -1,9 +1,11 @@
-{Project Name}
-==============================
+TSearchEd
+=========
 
-{Brief Description}
+Search SubRip formatted transcripts for text matches.
 
-Status:
+This is part of the Podcasting 2.0 project.
+
+Status: Prototype
 
 {Usage and Examples}
 
@@ -15,6 +17,14 @@ Features
 
 Installation
 ------------
+
+Package Layout
+--------------
+
+ - *./index.js* NodeJS entrypoint for CLI applications.
+ - *./test.js* Launch the test suite from the CLI.
+ - */js/* ES6 Modules
+ - */test/* Utilities and module for running tests.
 
 Building
 --------
