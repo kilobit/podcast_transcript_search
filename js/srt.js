@@ -1,8 +1,38 @@
 // srt.js
 
-export function hello() {
-    console.log("Hello World!");
-    console.log("srt.js is loaded.");
+class TOffset {
+    constructor(hours, minutes, seconds, millis) {
+	this.millis =
+	    hours * 36000000 +
+	    minutes * 60000 +
+	    seconds * 1000 +
+	    millis;
+    }
+
+    get [Symbol.toStringTag]() {
+	return "" + this.millis / 1000;
+    }
+}
+
+const toffre = /(?<hours>\d\d):(?<minutes>\d\d):(?<seconds>\d\d)\,(?<millis>\d+)/;
+function parseTOffsetFromString(str) {
+
+    let hours = 0;
+    let minutes = 0;
+    let seconds = 0;
+    let millis = 0;
+    
+    let match = str.match(toffre);
+    if(match == null) {
+	return null;
+    }
+
+    hours = parseInt(match.groups.hours, 10);
+    minutes = parseInt(match.groups.minutes, 10);
+    seconds = parseInt(match.groups.seconds, 10);
+    millis = parseInt(match.groups.millis, 10);
+
+    return new TOffset(hours, minutes, seconds, millis);
 }
 
 class Parser {
@@ -78,8 +108,19 @@ function parseSeq(p) {
     return parseFunc;
 }
 
+const tcre = /(?<start>\S+)\s*-->\s*(?<end>\S+)/
 function parseTimecode(p) {
-    p.curr["timecode"] = p.line();
+
+    let start = "";
+    let end = "";
+    
+    let matches = p.line().match(tcre);
+    if(matches != null) {
+	start = parseTOffsetFromString(matches.groups.start);
+	end = parseTOffsetFromString(matches.groups.end);
+    }
+    
+    p.curr["timecode"] = {start: start, end: end};
 
     let parseFunc = parseMessage;
     let line = p.next();
@@ -95,7 +136,7 @@ function parseMessage(p) {
     let msg = p.line();
     let line = p.next();
     while(line != "" && line != null) {
-	msg += line;
+	msg += "\n" + line;
 	line = p.next();
     }
 

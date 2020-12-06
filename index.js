@@ -1,13 +1,7 @@
 // index.js
 //
 
-console.log("Hello World!");
-
 import * as srt from "./js/srt.js";
-
-console.log(srt);
-
-srt.hello();
 
 const text = `
 
