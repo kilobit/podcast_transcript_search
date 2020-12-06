@@ -61,6 +61,13 @@ class Parser {
     }
 }
 
+export function searchSimple(entries, query) {
+
+    const q = query.toLowerCase();
+    
+    return entries.filter((entry) => entry.message.toLowerCase().includes(q));
+}
+
 export function parseFromText(text) {
 
     let p = new Parser(text.split("\n"));

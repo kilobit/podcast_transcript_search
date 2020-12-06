@@ -1,21 +1,47 @@
 // index.js
 //
 
+import {argv, exit} from "process";
+import * as fs from "fs/promises";
 import * as srt from "./js/srt.js";
 
-const text = `
+let q;
+let fn = "/dev/stdin";
+let of = "/dev/stdout";
 
-1
-00:02:17,440 --> 00:02:20,375
-Senator, we're making
-our final approach into Coruscant.
+switch(argv.length) {
 
-2
-00:02:20,476 --> 00:02:22,501
-Very good, Lieutenant.
+case 3:
+    q = argv[2];
+    break;
 
-`;
+case 4:
+    q = argv[2];
+    fn = argv[3];
+    break;
 
-const foo = srt.parseFromText(text);
-console.log(foo);
+case 5:
+    q = argv[2];
+    fn = argv[3];
+    of = argv[4];
+    break;
+    
+default:
+    console.error("Usage: nodejs index.js QUERY [SRTFILE] [OUTFILE]");
+    exit(1);
+}
 
+fs.readFile(fn, 'utf8').then((text) => {
+    
+    const entries = srt.parseFromText(text);
+    const results = srt.searchSimple(entries, q);
+
+    fs.writeFile(of, JSON.stringify(results, null, 2), 'utf8').catch((err) => {
+	console.error(err);
+	exit(1);
+    });
+    
+}).catch((err) => {
+    console.error(err);
+    exit(1);
+});
