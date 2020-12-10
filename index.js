@@ -1,5 +1,5 @@
 // index.js
-//
+// © 2020 Kilobit Labs Inc.
 
 import {argv, exit} from "process";
 import * as fs from "fs/promises";

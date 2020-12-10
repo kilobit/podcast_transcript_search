@@ -1,9 +1,9 @@
-TSearchEd
-=========
+Podcast Transcript Search
+=========================
 
 Search SubRip formatted transcripts for text matches.
 
-This is part of the Podcasting 2.0 project.
+This has been produced in support of the Podcasting 2.0 project.
 
 Status: Prototype
 
@@ -74,6 +74,8 @@ Features
 --------
 
 - Read srt data and perform a simple string match.
+- Use from the CLI.
+- Access via browser with a static www server.
 
 Future:
 
@@ -81,6 +83,7 @@ Future:
 - Provide context for matches.
 - Stream the srt data rather than reading then processing.
 - Add context before and after the match.
+- Implement service to mitigate CORS.
 
 Installation
 ------------
@@ -88,19 +91,22 @@ Installation
 Package Layout
 --------------
 
- - *./index.js* NodeJS entrypoint for CLI applications.
- - *./test.js* Launch the test suite from the CLI.
- - */js/* ES6 Modules
- - */test/* Utilities and module for running tests.
+Coming Soon!
 
 Building
 --------
 
+Run from NPM Coming Soon!
+
 Contribute
 ----------
 
+Submit pull requests through [github](https://github.com/kilobit/).
+
 Support
 -------
+
+Submit tickets through [github](https://github.com/kilobit/).
 
 License
 -------
@@ -108,6 +114,6 @@ License
 See LICENSE.
 
 --
-Created: Jun 18, 2019
+Created: Dec 9, 2019
 By: Christian Saunders <cps@kilobit.ca>
-Copyright 2019 Kilobit Labs Inc.
+Kilobit Labs Inc.
