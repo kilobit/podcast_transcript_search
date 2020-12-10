@@ -46,13 +46,15 @@ import {searchSimple, parseFromText} from "./srt.js";
 	}
 
 	showResults(results) {
-	    // iterate over the result set
-	    // stamp the template
+
+	    while(this.results_list_el.firstChild) {
+		this.results_list_el.firstChild.remove();
+	    }
 
 	    this.results_el.style.visibility = "visible";
 
 	    results.map((result) => {
-		console.log(result);
+
 		const clone = this.rtmplt.content.cloneNode(true);
 
 		const hdr = clone.querySelector(".result-header");
