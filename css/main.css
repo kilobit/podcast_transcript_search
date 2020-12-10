@@ -1,0 +1,139 @@
+/* main.css */
+
+:root {
+    --transition-secs: 0.2s;
+    --border-radius: 5px;
+    --bg-main: #ffffff;
+    --color-primary: #d41111;
+    --color-text-light: #d2d2d2;
+    --color-text-dark: #2d2d2d;
+    --font-family: "Trebuchet MS", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Tahoma, sans-serif;
+}
+
+* {
+    margin: 0;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font-family: var(--font-family);
+    font: inherit;
+    vertical-align: baseline;
+    color: var(--color-text-dark);
+    line-height: 1.2rem;
+    transition: var(--transition-secs);
+}
+
+body {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    grid-template-columns: 100%;
+    min-height: 100vh;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-family);
+    font-weight: 400;
+    padding-top: 1.5rem;
+    padding-bottom: 1rem;
+}
+
+li {
+    padding-bottom: 0.2rem;
+}
+
+p {
+    padding-top: 0.2rem 5rem;
+}
+
+.wrap-head {
+    filter: drop-shadow(-1px 6px 3px rgba(30, 30, 30, 0.8));
+}
+
+header {
+    background-color: var(--color-primary);
+    color: var(--color-text-light);
+    margin: 0;
+    padding: 2rem 5vw;
+    height: 6rem;
+    clip-path: polygon(0 0, 0 100%, 100% 75%, 100% 0);
+    filter: drop-shadow(16px 16px 20px blue);
+}
+
+main {
+    background-color: var(---bg-main);
+}
+
+main > section {
+    max-width: 70ch;
+    margin: auto;
+    padding: 10vh 0;
+}
+
+label {
+}
+
+input, select {
+    height: 1.5rem;
+    width: 100%;
+    border-radius: 5px;
+    margin: 8px 0;
+}
+
+button {
+    height: 1.5rem;
+    border-radius: var(--border-radius);
+    margin: 8px 0;
+}
+
+button:hover {
+    background-color: black;
+    color: white;
+    cursor: pointer;
+}
+
+#transcript-override {
+    display: none;
+}
+
+#transcript {
+}
+
+#transcript-url {
+}
+
+section.results {
+    max-width: 70ch;
+    margin: auto;
+    padding-bottom: 2rem;
+}
+
+#results {
+    visibility: collapse;
+}
+
+#results-list > li {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    margin-bottom: 0.2rem;
+    border-radius: var(--border-radius);
+}
+
+#results-list > li:nth-child(even) {
+    background-color: #ffcaca;
+}
+
+#results-list > li:nth-child(odd) {
+    background-color: #e65d5d;
+}
+
+footer {
+    background-color: var(--bg-main);
+    bottom: 0;
+    height: 2rem;
+    border-top: 1px solid black;
+    z-index: 1;
+}

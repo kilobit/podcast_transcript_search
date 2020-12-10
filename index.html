@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html">
+  <meta name="revisit-after" content="1 hours">
+
+  <title>Podcast Transcript Search</title>
+
+  <link rel="icon" type="image/png" href="/img/favicon-16.png">
+  
+  <meta name="author" content="Christian Saunders">
+
+  <meta name="description" content="">
+  <meta name="generator" content="Hand Coded">
+  <meta name="keywords" content="">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+  <link rel="stylesheet" href="css/main.css" />
+  
+</head>
+<body>
+  <div class="wrap-head">
+    <header>
+      <h1>Podcast Transcript Search</h1>
+    </header>
+  </div>
+
+  <main class="container">
+
+    <section class="search">
+    
+      <form class="row" action="/" method="get">
+
+	<label for="query">Search Query</label>
+	<input type="text" name="query" id="query" />
+
+	<label for="transcript">Choose a transcript to search</label>
+	<select name="transcript" id="transcript">
+	  <option value="/samples/NA-1301-Captions.srt">
+	    No Agenda Episode 1301 - BINO
+	  </option>
+	  <option value="/samples/PC20-14-Captions.srt">
+	    Podcasting 2.0 Episode 14 - Stats and Facts
+	  </option>
+	  <option value="-">Other</option>
+	</select>
+
+	<span id="transcript-override">
+	  <label for="transcript-url">Or provide a url to a transcript.</label>
+	  <input type="text" name="transcript-url" id="transcript-url"/>
+	</span>
+
+	<button type="button" id="search">Search Transcript</button>
+      
+      </form>
+    </section>
+
+    <span id="results">
+      <section class="results">
+	<hr width="100%"/>
+	<h2>Results:</h2>
+	<ol id="results-list">
+	</ol>
+      </section>
+    </span>
+
+    <template id="result-template">
+      <li>
+	<ul style="list-style: none;">
+	  <li class="result-header">Sequence</li>
+	  <li class="result-message">Message</li>
+	</ul>
+      </li>
+    </template>
+    
+  </main>
+
+  <footer>
+    <p>&copy; 2020 Kilobit Labs Inc.</p>
+  </footer>
+
+  <script type="module" src="/js/main.js"></script>
+</body>
+</html>
