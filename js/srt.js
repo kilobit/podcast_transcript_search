@@ -12,6 +12,12 @@ class TOffset {
     get [Symbol.toStringTag]() {
 	return "" + this.millis / 1000;
     }
+
+    hmsString() {
+	const d = new Date(this.millis);
+
+	return `${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}.${d.getMilliseconds()}`;
+    }
 }
 
 const toffre = /(?<hours>\d\d):(?<minutes>\d\d):(?<seconds>\d\d)\,(?<millis>\d+)/;
