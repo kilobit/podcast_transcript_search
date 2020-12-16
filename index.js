@@ -31,10 +31,10 @@ default:
     exit(1);
 }
 
-fs.readFile(fn, 'utf8').then((text) => {
+fs.readFile(fn, 'utf8').then((lines) => {
     
-    const entries = srt.parseFromText(text);
-    const results = srt.searchSimple(entries, q);
+    const [text, entries] = srt.parseFromText(lines);
+    const results = srt.searchSimple(text, entries, q);
 
     fs.writeFile(of, JSON.stringify(results, null, 2), 'utf8').catch((err) => {
 	console.error(err);

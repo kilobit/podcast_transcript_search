@@ -41,11 +41,14 @@ function parseTOffsetFromString(str) {
     return new TOffset(hours, minutes, seconds, millis);
 }
 
+const wordre = /[.,\/#!$%\^&\*;:{}=\-_`~()\s\n\t\r]+/;
+
 class Parser {
     constructor(lines) {
 	this.lines = lines;
 	this.i = 0;
 	this.curr = null;
+	this.text = "";
 	this.entries = [];
 	this.err = null;
     }
@@ -63,15 +66,55 @@ class Parser {
     }
 
     addEntry(entry) {
+
+	let t = entry.message.trim().toLowerCase().split(wordre).filter((w) => w !== "").join(" ");
+	entry.i = this.text.length + 1;
+	entry.c = entry.i + t.length;
+	this.text += ` ${t}`;
 	this.entries.push(entry);
     }
 }
 
-export function searchSimple(entries, query) {
+export function searchSimple(text, entries, query) {
 
-    const q = query.toLowerCase();
-    
-    return entries.filter((entry) => entry.message.toLowerCase().includes(q));
+    const q = query.toLowerCase().split(wordre).filter((w) => w !== "").join(" ");
+    console.log("q:", q);
+
+    return doSearchSimple(0, text, entries, q);
+}
+
+function doSearchSimple(idx, text, entries, q) {
+
+    // Search the text for the query.
+    idx = text.indexOf(q, idx);
+    if(idx == -1) {
+	return [];
+    }
+    console.log(idx, idx + q.length);
+    console.log(text.slice(idx, idx + 100));
+
+    // Find the entry associated with the beginning of the query.
+    const results = [];
+    let i = entries.findIndex((entry) => entry.i < idx && idx < entry.c);
+    if(i == -1) {
+	return [];
+    }
+    let entry = entries[i];
+    console.log(entry);
+
+    // Load all the remaining entries that constitute a match.
+    while(entry.i < idx + q.length) {
+	results.push(entry);
+	i++;
+	entry = entries[i];
+	console.log(entry);
+	if(!entry) {
+	    return [];
+	}
+    }
+
+    // Recurse, ignoring the portion of the text that has already matched.
+    return [...results, ...doSearchSimple(idx + q.length, text, entries.slice(i), q)];
 }
 
 export function parseFromText(text) {
@@ -87,7 +130,7 @@ export function parseFromText(text) {
 	}
     }
 
-    return p.entries;
+    return [p.text, p.entries];
 }
 
 function parseTop(p) {

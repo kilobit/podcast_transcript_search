@@ -86,15 +86,15 @@ import {searchSimple, parseFromText} from "./srt.js";
 	    return null;
 	}
 
-	const text = await response.text();
+	const srt = await response.text();
 
-	const entries = parseFromText(text);
+	const [text, entries] = parseFromText(srt);
 	if(entries == null) {
 	    console.error("Failed to parse the SRT.", text.slice(100));
 	    return null;
 	}
 
-	const results = searchSimple(entries, q);
+	const results = searchSimple(text, entries, q);
 	
 	return results;
     }
