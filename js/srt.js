@@ -41,7 +41,7 @@ function parseTOffsetFromString(str) {
     return new TOffset(hours, minutes, seconds, millis);
 }
 
-const wordre = /[.,\/#!$%\^&\*;:{}=\-_`~()\s\n\t\r]+/;
+const wordre = /[\s\n\t\r]+/;
 
 class Parser {
     constructor(lines) {
@@ -78,20 +78,17 @@ class Parser {
 export function searchSimple(text, entries, query) {
 
     const q = query.toLowerCase().split(wordre).filter((w) => w !== "").join(" ");
-    console.log("q:", q);
 
-    return doSearchSimple(0, text, entries, q);
+    return doSearchSimple(0, text, entries, q, 3);
 }
 
-function doSearchSimple(idx, text, entries, q) {
+function doSearchSimple(idx, text, entries, q, context) {
 
     // Search the text for the query.
     idx = text.indexOf(q, idx);
     if(idx == -1) {
 	return [];
     }
-    console.log(idx, idx + q.length);
-    console.log(text.slice(idx, idx + 100));
 
     // Find the entry associated with the beginning of the query.
     const results = [];
@@ -100,21 +97,25 @@ function doSearchSimple(idx, text, entries, q) {
 	return [];
     }
     let entry = entries[i];
-    console.log(entry);
 
+    // Add the pre-context to the result set
+    results.push(...entries.slice(Math.max(0, i-context), i));
+    
     // Load all the remaining entries that constitute a match.
     while(entry.i < idx + q.length) {
 	results.push(entry);
 	i++;
 	entry = entries[i];
-	console.log(entry);
 	if(!entry) {
 	    return [];
 	}
     }
 
+    // Add the post-context to the result set
+    results.push(...entries.slice(i, Math.min(i+context, entries.length-1)));
+
     // Recurse, ignoring the portion of the text that has already matched.
-    return [...results, ...doSearchSimple(idx + q.length, text, entries.slice(i), q)];
+    return [results, ...doSearchSimple(idx + q.length, text, entries.slice(i), q, context)];
 }
 
 export function parseFromText(text) {

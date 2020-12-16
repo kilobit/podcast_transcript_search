@@ -39,8 +39,6 @@ import {searchSimple, parseFromText} from "./srt.js";
 		
 		const results = await doSearch(app.query_el.value, url);
 
-		console.log(results);
-
 		this.showResults(results);
 	    }
 	}
@@ -53,17 +51,19 @@ import {searchSimple, parseFromText} from "./srt.js";
 
 	    this.results_el.style.visibility = "visible";
 
-	    results.map((result) => {
+	    results.map((entries) => {
+
+		const start = entries[0].timecode.start.hmsString();
+		const end = entries[entries.length - 1].timecode.end.hmsString();
+		const text = entries.map((entry) => entry.message).join("\n");
+		const seqs = entries.map((entry) => entry.seq).join(", ");
 
 		const clone = this.rtmplt.content.cloneNode(true);
-
 		const hdr = clone.querySelector(".result-header");
-		const start = result.timecode.start.hmsString();
-		const end = result.timecode.end.hmsString();
-		hdr.innerText = `Caption #${result.seq}: ${start} - ${end}`;
+		hdr.innerText = `Caption #${seqs}: ${start} - ${end}`;
 
 		const msg = clone.querySelector(".result-message");
-		msg.innerText = result.message;
+		msg.innerText = text;
 		
 		this.results_list_el.appendChild(clone);
 
