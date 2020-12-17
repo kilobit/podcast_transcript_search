@@ -51,19 +51,14 @@ import {searchSimple, parseFromText} from "./srt.js";
 
 	    this.results_el.style.visibility = "visible";
 
-	    results.map((entries) => {
-
-		const start = entries[0].timecode.start.hmsString();
-		const end = entries[entries.length - 1].timecode.end.hmsString();
-		const text = entries.map((entry) => entry.message).join("\n");
-		const seqs = entries.map((entry) => entry.seq).join(", ");
+	    results.map((result) => {
 
 		const clone = this.rtmplt.content.cloneNode(true);
 		const hdr = clone.querySelector(".result-header");
-		hdr.innerText = `Caption #${seqs}: ${start} - ${end}`;
+		hdr.innerText = `Caption #${result.seq}: ${result.start} - ${result.end}`;
 
 		const msg = clone.querySelector(".result-message");
-		msg.innerText = text;
+		msg.innerText = result.message;
 		
 		this.results_list_el.appendChild(clone);
 

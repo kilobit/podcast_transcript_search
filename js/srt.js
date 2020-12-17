@@ -75,47 +75,43 @@ class Parser {
     }
 }
 
-export function searchSimple(text, entries, query) {
+function searchText(text, query) {
 
     const q = query.toLowerCase().split(wordre).filter((w) => w !== "").join(" ");
+    
+    let i = 0;
+    const matches = [];
+    while(true) {
+	i = text.indexOf(q, i+q.length);
+	if(i == -1) {
+	    break;
+	}
+	matches.push(i);
+    }
 
-    return doSearchSimple(0, text, entries, q, 3);
+    return matches;
 }
 
-function doSearchSimple(idx, text, entries, q, context) {
-
-    // Search the text for the query.
-    idx = text.indexOf(q, idx);
-    if(idx == -1) {
-	return [];
-    }
-
-    // Find the entry associated with the beginning of the query.
-    const results = [];
-    let i = entries.findIndex((entry) => entry.i < idx && idx < entry.c);
-    if(i == -1) {
-	return [];
-    }
-    let entry = entries[i];
-
-    // Add the pre-context to the result set
-    results.push(...entries.slice(Math.max(0, i-context), i));
+function searchEntries(i, entries) {
     
-    // Load all the remaining entries that constitute a match.
-    while(entry.i < idx + q.length) {
-	results.push(entry);
-	i++;
-	entry = entries[i];
-	if(!entry) {
-	    return [];
+    return entries.findIndex((entry) => entry.i < i && i < entry.c);    
+}
+
+export function searchSimple(text, entries, query) {
+
+    const ctx = 3;
+    const text_matches = searchText(text, query);
+    const entry_matches = text_matches.map((i) => searchEntries(i, entries));
+    
+    return entry_matches.map((i) => {
+	const matched_entries = entries.slice(Math.max(0, i-ctx), i + ctx);
+	return {
+	    seq: matched_entries.map((entry) => entry.seq).join(", "),
+	    start: matched_entries[0].start,
+	    end: matched_entries[matched_entries.length - 1].end,
+	    message: matched_entries.map((entry) => entry.message).join("\n"),
 	}
-    }
-
-    // Add the post-context to the result set
-    results.push(...entries.slice(i, Math.min(i+context, entries.length-1)));
-
-    // Recurse, ignoring the portion of the text that has already matched.
-    return [results, ...doSearchSimple(idx + q.length, text, entries.slice(i), q, context)];
+    });
 }
 
 export function parseFromText(text) {
