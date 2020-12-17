@@ -54,7 +54,6 @@ import {searchSimple, parseFromText} from "./srt.js";
 
 	    results.map((result) => {
 
-		//console.log(result);
 		const clone = this.rtmplt.content.cloneNode(true);
 		const hdr = clone.querySelector(".result-header");
 		hdr.innerText = `Captions: #${result.seq}\nTimecodes: ${result.start.hmsString()} - ${result.end.hmsString()}`;
@@ -63,11 +62,8 @@ import {searchSimple, parseFromText} from "./srt.js";
 		msg.innerText = result.message;
 
 		const audio = clone.querySelector(".result-audio");
-		audio.src = this.audio_feeds[this.transcript_el.options[this.transcript_el.selectedIndex].value];
-		audio.onloadedmetadata = (evt) => {
-		    audio.currentTime=result.start.seconds;
-		}
-		
+		audio.src = this.audio_feeds[this.transcript_el.options[this.transcript_el.selectedIndex].value] + `#t=${result.start.seconds}`;
+
 		this.results_list_el.appendChild(clone);
 
 	    });
