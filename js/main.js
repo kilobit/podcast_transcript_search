@@ -64,7 +64,9 @@ import {searchSimple, parseFromText} from "./srt.js";
 
 		const audio = clone.querySelector(".result-audio");
 		audio.src = this.audio_feeds[this.transcript_el.options[this.transcript_el.selectedIndex].value];
-		audio.currentTime=result.start.seconds;
+		audio.onloadedmetadata = (evt) => {
+		    audio.currentTime=result.start.seconds;
+		}
 		
 		this.results_list_el.appendChild(clone);
 
