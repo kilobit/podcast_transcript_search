@@ -49,6 +49,15 @@ p {
     padding-top: 0.2rem 5rem;
 }
 
+audio {
+    margin: 1rem auto;
+    padding: 0 2rem;
+}
+
+audio:focus {
+    outline: none;
+}
+
 .wrap-head {
     filter: drop-shadow(-1px 6px 3px rgba(30, 30, 30, 0.8));
 }

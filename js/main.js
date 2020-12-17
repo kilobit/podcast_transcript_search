@@ -18,6 +18,7 @@ import {searchSimple, parseFromText} from "./srt.js";
 	    this.results_el = document.getElementById("results");
 	    this.results_list_el = document.getElementById("results-list");
 	    this.rtmplt = document.getElementById("result-template");
+	    this.audio_feeds = JSON.parse(document.getElementById("podcast-audio").text);
 	    
 	    // Show / Hide the transcipt url field.
 	    this.transcript_el.oninput = (evt) => {
@@ -53,12 +54,17 @@ import {searchSimple, parseFromText} from "./srt.js";
 
 	    results.map((result) => {
 
+		//console.log(result);
 		const clone = this.rtmplt.content.cloneNode(true);
 		const hdr = clone.querySelector(".result-header");
-		hdr.innerText = `Caption #${result.seq}: ${result.start} - ${result.end}`;
+		hdr.innerText = `Captions: #${result.seq}\nTimecodes: ${result.start.hmsString()} - ${result.end.hmsString()}`;
 
 		const msg = clone.querySelector(".result-message");
 		msg.innerText = result.message;
+
+		const audio = clone.querySelector(".result-audio");
+		audio.src = this.audio_feeds[this.transcript_el.options[this.transcript_el.selectedIndex].value];
+		audio.currentTime=result.start.seconds;
 		
 		this.results_list_el.appendChild(clone);
 

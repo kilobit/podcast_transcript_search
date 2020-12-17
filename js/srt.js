@@ -3,7 +3,7 @@
 class TOffset {
     constructor(hours, minutes, seconds, millis) {
 	this.millis =
-	    hours * 36000000 +
+	    hours * 3600000 +
 	    minutes * 60000 +
 	    seconds * 1000 +
 	    millis;
@@ -13,10 +13,24 @@ class TOffset {
 	return "" + this.millis / 1000;
     }
 
-    hmsString() {
-	const d = new Date(this.millis);
+    get hours() {
+	return Math.floor(this.millis / 3600000);
+    }
 
-	return `${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}.${d.getMilliseconds()}`;
+    get minutes() {
+	return Math.floor(this.millis / 60000);
+    }
+    
+    get seconds() {
+	return Math.floor(this.millis / 1000);
+    }
+
+    hmsString() {
+	
+	let m = String(this.minutes % 60).padStart(2, '0');
+	let s = String(this.seconds % 60).padStart(2, '0');
+	
+	return `${this.hours}:${m}:${s}`;
     }
 }
 
@@ -94,21 +108,23 @@ function searchText(text, query) {
 
 function searchEntries(i, entries) {
     
-    return entries.findIndex((entry) => entry.i < i && i < entry.c);    
+    return entries.findIndex((entry) => entry.i <= i && i < entry.c);    
 }
 
 export function searchSimple(text, entries, query) {
 
-    const ctx = 3;
+    const ctx = 2; // FIXME: hard coded context value.
     const text_matches = searchText(text, query);
-    const entry_matches = text_matches.map((i) => searchEntries(i, entries));
-    
+    let entry_matches = text_matches.map((i) => searchEntries(i, entries));
+    entry_matches = entry_matches.filter((v, i, self) => self.indexOf(v) === i); // unique the results.
+
     return entry_matches.map((i) => {
 	const matched_entries = entries.slice(Math.max(0, i-ctx), i + ctx);
+
 	return {
 	    seq: matched_entries.map((entry) => entry.seq).join(", "),
-	    start: matched_entries[0].start,
-	    end: matched_entries[matched_entries.length - 1].end,
+	    start: matched_entries[0].timecode.start,
+	    end: matched_entries[matched_entries.length - 1].timecode.end,
 	    message: matched_entries.map((entry) => entry.message).join("\n"),
 	}
     });

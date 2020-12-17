@@ -47,6 +47,13 @@
 	  <option value="-">Other</option>
 	</select>
 
+	<script id="podcast-audio" type="application/json">
+	  {
+	      "samples/NA-1301-Captions.srt": "https://mp3s.nashownotes.com/NA-1301-2020-12-06-Final.mp3",
+	      "samples/PC20-14-Captions.srt": "https://mp3s.nashownotes.com/PC20-14-2020-12-04-Final.mp3"
+	  }
+	</script>
+	
 	<span id="transcript-override">
 	  <label for="transcript-url">Or provide a url to a transcript.</label>
 	  <input type="text" name="transcript-url" id="transcript-url"/>
@@ -70,8 +77,12 @@
       <li>
 	<ul style="list-style: none;">
 	  <li class="result-header">Sequence</li>
+	  <br />
 	  <li class="result-message">Message</li>
 	</ul>
+	<audio class="result-audio" controls>
+	  Audio tag not supported.
+	</audio>
       </li>
     </template>
     
